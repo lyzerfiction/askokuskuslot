@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>baba slot</title>
+  <style>
+    body {
+      background-color: pink;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: white;
+      text-shadow: 2px 2px 4px black;
+    }
+
+    .slot-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .slot {
+      width: 100px;
+      height: 100px;
+      border: 2px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: bold;
+      background-color: white;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .result {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .spin-button {
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .spin-button:hover {
+      background-color: #45a049;
+    }
+
+    .spinning {
+      animation: spinEffect 0.1s linear infinite;
+    }
+
+    @keyframes spinEffect {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+  <h1>aşko kuşko slot</h1>
+  <div class="slot-container">
+    <div class="slot" id="slot1">🍎</div>
+    <div class="slot" id="slot2">🍎</div>
+    <div class="slot" id="slot3">🍎</div>
+  </div>
+  <div class="result" id="result"></div>
+  <button class="spin-button" onclick="spin()">döndür</button>
+
+ 
+  <audio id="spinSound" src="za.mp3"></audio>
+  <audio id="winSound" src="yeey.mp3"></audio>
+  <audio id="loseSound" src="za2.mp3"></audio>
+
+  <script>
+    const images = ["🍎", "🍌", "🍒", "🍇", "🍋"];
+    const spinSound = document.getElementById("spinSound");
+    const winSound = document.getElementById("winSound");
+    const loseSound = document.getElementById("loseSound");
+
+    function spin() {
+      const slot1 = document.getElementById("slot1");
+      const slot2 = document.getElementById("slot2");
+      const slot3 = document.getElementById("slot3");
+      const result = document.getElementById("result");
+
+    
+      slot1.classList.add("spinning");
+      slot2.classList.add("spinning");
+      slot3.classList.add("spinning");
+
+    
+      spinSound.currentTime = 0;
+      spinSound.play();
+
+      
+      let interval = setInterval(() => {
+        slot1.textContent = images[Math.floor(Math.random() * images.length)];
+        slot2.textContent = images[Math.floor(Math.random() * images.length)];
+        slot3.textContent = images[Math.floor(Math.random() * images.length)];
+      }, 100);
+
+      
+      setTimeout(() => {
+        clearInterval(interval); // Döndürme işlemini durdur
+        const final1 = images[Math.floor(Math.random() * images.length)];
+        const final2 = images[Math.floor(Math.random() * images.length)];
+        const final3 = images[Math.floor(Math.random() * images.length)];
+
+        slot1.textContent = final1;
+        slot2.textContent = final2;
+        slot3.textContent = final3;
+
+        slot1.classList.remove("spinning");
+        slot2.classList.remove("spinning");
+        slot3.classList.remove("spinning");
+
+        
+        if (final1 === final2 && final2 === final3) {
+          result.textContent = "YEEEEEYYY!";
+          result.style.color = "green";
+
+         
+          winSound.currentTime = 0;
+          winSound.play();
+        } else {
+          result.textContent = "aga b!";
+          result.style.color = "red";
+
+         
+          loseSound.currentTime = 0;
+          loseSound.play();
+        }
+
+       
+        spinSound.pause();
+      }, 3500); // 2 saniye boyunca dönecek
+    }
+  </script>
+</body>
+</html>
